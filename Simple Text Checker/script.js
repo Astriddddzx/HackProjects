@@ -145,7 +145,12 @@ function processResults(text, dict) {
 	let averageWordsPerLine = totalWords / parseFloat(text.length);
 	let topWordOccurrences = getTopWordOccurrences(text, numTopOccurrences);
 	let misspelledWords = getMisspelledWords(text, dict);
-
+  console.log ("\n\n\n");
+  console.log ("===================================");
+  console.log ("\n\nHello! Welcome to Simple Text Checker!\n\n");
+  console.log ("\n\nI provide some basic stats about your text file,\nand will catch most of your spelling-errors!\n(This app uses the Unix system dictionary as a reference.)");
+  console.log ("===================================");
+  console.log ("\n\n\n");
 	console.log("Total number of words:", totalWords);
 	console.log("Average words per line:", averageWordsPerLine);
 	console.log("Top occurrences:", printFormat(topWordOccurrences));
