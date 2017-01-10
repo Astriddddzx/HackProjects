@@ -1,0 +1,16 @@
+{
+  "name": "one-page-list-app",
+  "version": "1.0.0",
+  "description": "A simple list app to review express and handlebars.",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Andrew George",
+  "license": "MIT",
+  "dependencies": {
+    "body-parser": "^1.15.2",
+    "express": "^4.14.0",
+    "hbs": "^4.0.1"
+  }
+}

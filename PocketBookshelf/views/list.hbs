@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html>
+	<head><title>{{name}}</title></head>
+	<link rel="stylesheet" type="text/css" href="css/style.css">
+	<body>
+
+		<center><h1>{{name}}</h1></center>
+		<ul class='list'>
+			{{#each items}}
+				<li class='item'>
+					<span>{{value}}</span>
+					<!-- TODO: Link to /delete/:id -->
+					<a href='/delete/{{ id }}'><span>X</span></a>
+				</li>
+				{{/each}}
+
+			<li class='item'>
+				<form action='/add' method='POST'>
+					<span><input type=text name='listItem' id='value' placeholder='Add List Item Here' required/></span>
+					<span><input type=submit id='addBtn' value='Add'/></span>
+				</form>
+			</li>
+		</ul>
+	</body>
+</html>

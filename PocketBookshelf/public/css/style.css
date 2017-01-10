@@ -1,0 +1,73 @@
+.list {
+	display: block;
+	position: absolute;
+	left: 25%;
+	right: 25%;
+}
+
+.item {
+	position: relative;
+	display: block;
+	margin: 10px;
+	border: 2px solid blue;
+	font-size: 20px;
+	font-family: Monospace;
+	list-style: none;
+}
+
+.item span:first-child {
+	display: inline-block;
+	padding: 10px;
+}
+
+.item span:last-child {
+	display: inline-block;
+	position: absolute;
+	left: 80%;
+	right: 0%;
+	top: 0%;
+	bottom: 0%;
+	color: white;
+	background-color: blue;
+	font-family: Arial;
+	font-weight: bold;
+	text-align: center;
+}
+
+#value {
+	display: inline-block;
+	padding-left: 5px;
+	position: absolute;
+	left: 0px;
+	top: 0%;
+	bottom: 0%;
+	width: 80%;
+}
+
+#addBtn {
+	background-color: blue;
+	border: 0;
+	color: white;
+	font-weight: bold;
+}
+
+#name {
+	position: relative;
+	left: 25%;
+	width: 50%;
+	font-size: 2em;
+	text-align: center;
+	border: 0;
+	border-bottom: 1px solid black;
+}
+
+#subBtn {
+	position: relative;
+	left: 40%;
+	width: 20%;
+	margin-top: 20px;
+	border: 1px solid blue;
+	background-color: white;
+	font-weight: bold;
+	font-size: 1.5em;
+}
