@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>BruinMessenger - {{room}}</title>
+	<link rel="stylesheet" href="/css/chatroomStyles.css">
+	<script src="/js/jquery-2.1.4.min.js"></script>
+	<script src="/socket.io/socket.io.js"></script>
+	<script src="https://widget.cloudinary.com/global/all.js"></script>
+	<script>
+	$(() => {
+		// variables created when the hbs is rendered
+		let socket = io('{{host}}/chatroom')
+		let roomID = '{{roomID}}'
+		let user = '{{user.fullName}}'
+		let userPic = '{{user.profilePic}}'
+
+		// static elements on page to manipulate
+		let chatUsers = $('.chatUsers')
+		let chatInput = $("input[name='userInput']")
+		let chatMessagesDiv = $('.chatMessages')
+		let filePicker = $('#uploadFile')
+
+		let userList = user => {
+			 // definitely needs fixing
+			return `<div class="userBlock">
+								<div class="userPic"><img src="${user.userPic}" alt="${user.user}"></div>
+								<div class="cuserName">${user.user}</div>
+							</div>`
+		}
+
+		/**
+		 * Todo #1
+		 * Handle the 'connect' event on the socket
+		 * The handler should emit the 'join' event and send an object
+		 *   containing `roomID`, `user`, and `userPic`
+		 */
+		socket.on('connect', () => {
+			socket.emit('join', { roomID, user, userPic });
+		});
+
+
+
+
+		/**
+		 * Todo #4
+		 * Handle the 'inMessage' event. The handler takes one argument `data`
+		 *   In the handler, call the updateFeed function with two arguments,
+		 *     data.userPic and data.message
+		 */
+
+		socket.on('inMessage', (data) => {
+			updateFeed(data.userPic, data.message);
+		});
+
+
+
+		let sendMessage = message => {
+			/**
+			 * Todo #3
+			 * Emit an event 'newMessage' with an object containing the following items:
+			 *   roomID, user, userPic, and message
+			 */
+			socket.emit('newMessage', { roomID, user, userPic, message });
+
+
+
+
+
+		}
+
+		let handleUpdateRoom = data => {
+			let usersListData = ''
+			for (let user of data.users) {
+				usersListData += userList(user)
+			}
+			chatUsers.html('').html(usersListData)
+
+			for (let info of data.history) {
+				updateFeed(info.userPic, info.message)
+			}
+		}
+
+		/**
+		 * Todo #2
+		 * Handle the 'updateRoom' event by calling the handleUpdateRoom function
+		 * with the data received from the server
+		 */
+
+		socket.on('updateRoom', (data) => {
+			handleUpdateRoom(data);
+		});
+
+
+
+
+		let updateFeed = (userPic, message) => {
+			let template = `<div class="chatBlock">
+												<div class="userPic"><img src="${userPic}"></div>
+												<div class="chatMsg">${message}</div>
+											</div>`
+											// todo don't prepend
+			$(template).hide().prependTo(chatMessagesDiv).slideDown(200)
+		}
+
+		chatInput.on('keyup', function(evt) {
+			evt.preventDefault()
+			let messageFld = $(this)
+			input = messageFld.val()
+			if (evt.which === 13 && input !== '') {
+				sendMessage(input);
+
+				// Update the local feed
+				updateFeed(userPic, input)
+				messageFld.val('')
+			}
+		})
+
+		filePicker.on('click', function(evt) {
+			cloudinary.openUploadWidget({
+				cloud_name:'dxxy338vi',
+				upload_preset: 'pzjvfhly'
+			}, (error, result) => {
+				if (!error) {
+					let tmp = ''
+					for (let img of result) {
+						tmp += `<img src="${img.url}" />`
+					}
+					updateFeed(userPic, tmp)
+					sendMessage(tmp);
+				}
+			})
+		})
+	})
+	</script>
+</head>
+<body>
+	<div class="container">
+		<div class="titlePanel">
+			<h1>BruinMessenger | {{room}}</h1>
+		</div>
+		<div class="controls">
+			<div class="userPicHolder"><img src="{{user.profilePic}}" alt="{{user.profilePic}}"></div>
+			<p class="userName">{{user.fullName}}</p>
+			<a href="/rooms" id="roomsBtn">Rooms</a>
+			<a href="/logout" id="logOutBtn">Logout</a>
+		</div>
+		<div class="chatListDiv">
+			<div class="chatMessagesPanel">
+				<div class="chatMessages">
+				<!-- Loop this for chat messages -->
+
+				<!-- loop end -->
+				</div>
+				<div class="typePanel">
+					<input type="text" name="userInput" placeholder="Type here and press enter">
+					<a href="#" id="uploadFile" class="fileUploadBtn">Photo</a>
+				</div>
+			</div>
+			<div class="chatUsers">
+			<!-- Loop this for chat users -->
+
+			<!-- loop end -->
+			</div>
+		</div>
+	</div>
+</body>
+</html>
+
+<!-- Under Section 107 of the Copyright Act 1976, allowance is made for "fair use" for purposes such as criticism, comment, news reporting, teaching, scholarship, and research. Fair use is a use permitted by copyright statute that might otherwise be infringing. Non-profit, educational or personal use tips the balance in favor of fair use.
+This project is inspired by the following udemy course: https://www.udemy.com/all-about-nodejs -->
